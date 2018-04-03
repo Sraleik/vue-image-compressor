@@ -97,48 +97,60 @@
         let canvas = document.createElement('canvas')
         this.canvas = canvas
 
-        // Set Canvas Context
-        let ctx = this.canvas.getContext('2d')
 
         // Create New Image
         let img = new Image()
-        img.src = imgUrl
 
         // Image Size After Scaling
         let scale = this.scale / 100
-        let width = img.width * scale
-        let height = img.height * scale
+        let width, height
+        let that = this
+        let objToPass
 
-        // Set Canvas Height And Width According to Image Size And Scale
-        this.canvas.setAttribute('width', width)
-        this.canvas.setAttribute('height', height)
+        img.onload = function () {
+          width = this.width * scale
+          height = this.height * scale
 
-        ctx.drawImage(img, 0, 0, width, height)
+          // Set Canvas Height And Width According to Image Size And Scale
+          that.canvas.setAttribute('width', width)
+          that.canvas.setAttribute('height', height)
 
-        // Quality Of Image
-        let quality = this.quality ? (this.quality / 100) : 1
+          // Set Canvas Context
+          let ctx = that.canvas.getContext('2d')
+          ctx.drawImage(img, 0, 0, width, height)
 
-        // If all files have been proceed
-        let base64 = this.canvas.toDataURL('image/jpeg', quality)
-        let fileName = this.result.file.name
-        let lastDot = fileName.lastIndexOf(".")
-        fileName = fileName.substr(0,lastDot) + '.jpeg'
+          // Quality Of Image
+          let quality = that.quality ? (that.quality / 100) : 1
 
-        let objToPass = {
-          canvas: this.canvas,
-          original: this.result,
-          compressed: {
-            blob: this.toBlob(base64),
-            base64: base64,
-            name: fileName,
-            file: this.buildFile(base64, fileName)
-          },
+          // If all files have been proceed
+          let base64 = that.canvas.toDataURL('image/jpeg', quality)
+
+          let fileName = that.result.file.name
+          let lastDot = fileName.lastIndexOf(".")
+          fileName = fileName.substr(0,lastDot) + '.jpeg'
+
+          let oBlob = that.toBlob(base64)
+
+          let oFile = that.buildFile(base64, fileName)
+
+          objToPass = {
+            canvas: that.canvas,
+            original: that.result,
+            compressed: {
+              blob: oBlob,
+              base64: base64,
+              name: fileName,
+              file: oFile
+            },
+          }
+
+          objToPass.compressed.size = Math.round(objToPass.compressed.file.size / 1000)+' kB'
+          objToPass.compressed.type = "image/jpeg"
+
+          that.done(objToPass)
         }
 
-        objToPass.compressed.size = Math.round(objToPass.compressed.file.size / 1000)+' kB'
-        objToPass.compressed.type = "image/jpeg"
-
-        this.done(objToPass)
+        img.src = imgUrl
 
       },
 
