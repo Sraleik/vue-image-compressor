@@ -190,7 +190,7 @@
 
       // Convert Base64 to Blob
       toBlob (imgUrl) {
-        let blob = base64toblob(imgUrl.split(',')[1], "image/jpeg")
+        let blob = imgUrl.split(',')[1]
         // let url = window.URL.createObjectURL(blob)
         // return url
         let theFile = new Blob([window.atob(blob)],  {type: 'image/jpeg', encoding: 'utf-8'})
