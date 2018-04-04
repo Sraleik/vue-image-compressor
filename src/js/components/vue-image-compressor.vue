@@ -131,7 +131,7 @@
 
           let oBlob = that.toBlob(base64)
 
-          let oFile = that.buildFile(base64, fileName, {type: 'image/jpeg'} )
+          let oFile = that.buildFile(base64, fileName, {type: 'image/jpeg', encoding: 'utf-8'} )
 
           objToPass = {
             canvas: that.canvas,
