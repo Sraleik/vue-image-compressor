@@ -131,7 +131,7 @@
 
           let oBlob = that.toBlob(base64)
 
-          let oFile = that.buildFile(base64, fileName, {type: 'image/jpeg', encoding: 'utf-8'} )
+          let oFile = that.buildFile(oBlob, fileName, {type: 'image/jpeg', encoding: 'utf-8'} )
 
           objToPass = {
             canvas: that.canvas,
@@ -191,8 +191,10 @@
       // Convert Base64 to Blob
       toBlob (imgUrl) {
         let blob = base64toblob(imgUrl.split(',')[1], "image/jpeg")
-        let url = window.URL.createObjectURL(blob)
-        return url
+        // let url = window.URL.createObjectURL(blob)
+        // return url
+        let theFile = new Blob([window.atob(blob)],  {type: 'image/jpeg', encoding: 'utf-8'})
+        return theFile
       },
 
       // Convert Blob To File
