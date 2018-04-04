@@ -18,8 +18,6 @@
   *
   */
 
-  import base64toblob from 'base64toblob';
-
   export default {
 
     props: {
