@@ -131,7 +131,7 @@
 
           let oBlob = that.toBlob(base64)
 
-          let oFile = that.buildFile(oBlob, fileName, {type: 'image/jpeg', encoding: 'utf-8'} )
+          let oFile = that.buildFile(oBlob, fileName, {type: 'image/jpeg'} )
 
           objToPass = {
             canvas: that.canvas,
@@ -193,7 +193,7 @@
         let blob = imgUrl.split(',')[1]
         // let url = window.URL.createObjectURL(blob)
         // return url
-        let theFile = new Blob([window.atob(blob)],  {type: 'image/jpeg', encoding: 'utf-8'})
+        let theFile = new Blob([window.atob(blob)],  {type: 'image/jpeg'})
         return theFile
       },
 
